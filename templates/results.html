@@ -9,34 +9,43 @@
 </head>
 <body>
     <div class="container">
-        <header>
+        <header class="hero-header">
             <h1>유튜브 채널 스크래퍼</h1>
             <p>스크래핑 결과</p>
         </header>
         
         <main>
             <div class="results-header">
-                <h2>"{{ keyword }}" 검색 결과</h2>
-                <p>총 <strong>{{ total_channels }}</strong>개의 채널을 수집했습니다.</p>
-                <a href="{{ url_for('index') }}" class="btn">새 검색하기</a>
+                <div class="result-badge">
+                    <span class="badge-icon">🎯</span>
+                    <h2>"{{ keyword }}" 검색 결과</h2>
+                </div>
+                <p class="result-stats">
+                    총 <span class="highlight">{{ total_channels }}</span>개의 채널 발견
+                </p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <span class="btn-icon">🔍</span>
+                    새 검색하기
+                </a>
             </div>
             
             <div class="channel-grid">
                 {% for channel in channels %}
-                    <div class="channel-card">
-                        <h3>{{ channel['채널명'] }}</h3>
-                        <a href="{{ channel['채널URL'] }}" target="_blank" class="channel-link">채널 방문하기</a>
+                <div class="channel-card">
+                    <div class="channel-thumbnail">
+                        <img src="https://via.placeholder.com/80" alt="채널 썸네일">
                     </div>
-                    
-                    {% if loop.index % 2 == 0 and not loop.last %}
-                        </div><div class="channel-grid">
-                    {% endif %}
+                    <h3>{{ channel['채널명'] }}</h3>
+                    <a href="{{ channel['채널URL'] }}" target="_blank" class="channel-link">
+                        방문하기 →
+                    </a>
+                </div>
                 {% endfor %}
             </div>
         </main>
         
-        <footer>
-            <p>&copy; 2025 유튜브 채널 스크래퍼</p>
+        <footer class="modern-footer">
+            <p>© 2025 유튜브 채널 스크래퍼</p>
         </footer>
     </div>
 </body>

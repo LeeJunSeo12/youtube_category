@@ -1,6 +1,6 @@
-/* 기본 스타일링 */
+/* 기본 스타일링
 :root {
-    --primary-color: #ff0000;
+    --primary-color: #967373;
     --primary-hover: #cc0000;
     --secondary-color: #606060;
     --background-color: #f9f9f9;
@@ -10,7 +10,7 @@
     --success-color: #4caf50;
     --warning-color: #ff9800;
     --error-color: #f44336;
-}
+} */
 
 * {
     margin: 0;
@@ -285,5 +285,192 @@ footer {
     
     header h1 {
         font-size: 2rem;
+    }
+}
+
+
+
+/* Modern Gradient Theme */
+:root {
+    --primary-color: #fefefe;
+    --primary-hover: #a71543;
+    --gradient: linear-gradient(135deg, #a71543 0%, #a71543 100%);
+    --secondary-color: #4b5563;
+    --background-color: #f8fafc;
+    --card-bg: #ffffff;
+    --border-color: #a71543;
+    --text-color: #1e293b;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --error-color: #ef4444;
+    --glass-effect: rgba(255, 255, 255, 0.9);
+}
+
+/* Smooth Transitions */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Enhanced Header */
+header {
+    background: var(--gradient);
+    color: white;
+    padding: 4rem 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 30px rgba(99, 102, 241, 0.2);
+    border-radius: 0 0 2rem 2rem;
+}
+
+header h1 {
+    font-size: 3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+header p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+}
+
+/* Glassmorphism Cards */
+.card {
+    background: var(--glass-effect);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+}
+
+/* Modern Input Fields */
+input[type="text"],
+input[type="number"] {
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Hover Effect Buttons */
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: var(--gradient);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+}
+
+/* Animated Progress Bar */
+.progress-container {
+    height: 1rem;
+    background: rgba(226, 232, 240, 0.4);
+    border-radius: 999px;
+}
+
+.progress-bar {
+    background: var(--gradient);
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.15) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: 2rem 2rem;
+    animation: progress-stripes 1s linear infinite;
+}
+
+@keyframes progress-stripes {
+    from { background-position: 0 0; }
+    to { background-position: 2rem 0; }
+}
+
+/* Modern Channel Cards */
+.channel-card {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    background: var(--card-bg);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.channel-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: var(--gradient);
+    opacity: 0.1;
+    transform: rotate(45deg);
+}
+
+.channel-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.15);
+}
+
+/* Loading Animation */
+.loading-dots::after {
+    display: inline-block;
+    animation: dot-flashing 0.5s infinite linear;
+}
+
+@keyframes dot-flashing {
+    0% { content: '.'; }
+    33% { content: '..'; }
+    66% { content: '...'; }
+    100% { content: '.'; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    header {
+        padding: 2rem 1rem;
+        border-radius: 0 0 1.5rem 1.5rem;
+    }
+    
+    .channel-card {
+        flex: 0 0 100%;
     }
 }
