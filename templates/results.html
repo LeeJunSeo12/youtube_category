@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크래핑 결과 - 유튜브 채널 스크래퍼</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>유튜브 채널 스크래퍼</h1>
+            <p>스크래핑 결과</p>
+        </header>
+        
+        <main>
+            <div class="results-header">
+                <h2>"{{ keyword }}" 검색 결과</h2>
+                <p>총 <strong>{{ total_channels }}</strong>개의 채널을 수집했습니다.</p>
+                <a href="{{ url_for('index') }}" class="btn">새 검색하기</a>
+            </div>
+            
+            <div class="channel-grid">
+                {% for channel in channels %}
+                    <div class="channel-card">
+                        <h3>{{ channel['채널명'] }}</h3>
+                        <a href="{{ channel['채널URL'] }}" target="_blank" class="channel-link">채널 방문하기</a>
+                    </div>
+                    
+                    {% if loop.index % 2 == 0 and not loop.last %}
+                        </div><div class="channel-grid">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 유튜브 채널 스크래퍼</p>
+        </footer>
+    </div>
+</body>
+</html>

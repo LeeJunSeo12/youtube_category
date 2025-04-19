@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유튜브 채널 스크래퍼</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>유튜브 채널 스크래퍼</h1>
+            <p>유튜브에서 키워드로 채널을 검색하고 수집합니다</p>
+        </header>
+        
+        <main>
+            <div class="card">
+                <form action="{{ url_for('start_scraping') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="form-group">
+                        <label for="keyword">검색 키워드</label>
+                        <input type="text" id="keyword" name="keyword" placeholder="검색할 키워드를 입력하세요" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="max_channels">수집할 채널 수</label>
+                        <input type="number" id="max_channels" name="max_channels" placeholder="수집할 채널 수 (예: 100)" required min="1" max="1000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">스크래핑 시작</button>
+                    </div>
+                </form>
+            </div>
+            
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <div class="info-card">
+                <h2>사용 방법</h2>
+                <ul>
+                    <li>검색 키워드: 유튜브에서 검색할 키워드를 입력하세요.</li>
+                    <li>수집할 채널 수: 최대 몇 개의 채널을 수집할지 입력하세요.</li>
+                    <li>'스크래핑 시작' 버튼을 클릭하여 채널 수집을 시작합니다.</li>
+                    <li>수집이 완료되면 결과 페이지로 이동합니다.</li>
+                </ul>
+                <p class="warning">
+                    <strong>주의:</strong> 많은 수의 채널을 수집하면 시간이 오래 걸릴 수 있습니다.
+                </p>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 유튜브 채널 스크래퍼</p>
+        </footer>
+    </div>
+</body>
+</html>

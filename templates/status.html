@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크래핑 진행 중 - 유튜브 채널 스크래퍼</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>유튜브 채널 스크래퍼</h1>
+            <p>스크래핑 작업 진행 중...</p>
+        </header>
+        
+        <main>
+            <div class="card progress-card">
+                <h2>스크래핑 상태</h2>
+                
+                <div class="status-info">
+                    <p><strong>검색 키워드:</strong> {{ job.keyword }}</p>
+                    <p><strong>수집 목표:</strong> {{ job.max_channels }}개 채널</p>
+                    <p><strong>상태:</strong> <span id="status">{{ job.status }}</span></p>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: {{ job.progress }}%"></div>
+                </div>
+                <p class="progress-text">진행률: <span id="progress">{{ job.progress }}</span>%</p>
+                
+                {% if job.status == '오류' %}
+                    <div class="alert error">
+                        <p>오류가 발생했습니다: {{ job.error }}</p>
+                    </div>
+                    <a href="{{ url_for('index') }}" class="btn">다시 시도하기</a>
+                {% elif job.status == '완료' %}
+                    <a href="{{ url_for('results') }}" class="btn btn-primary">결과 보기</a>
+                {% else %}
+                    <p class="loading-text">데이터 수집 중...<span class="loading-dots"></span></p>
+                    <p class="tip">큰 데이터를 수집하는 경우 몇 분 정도 소요될 수 있습니다.</p>
+                {% endif %}
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 유튜브 채널 스크래퍼</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 상태 업데이트를 위한 JavaScript
+        const jobId = "{{ session.job_id }}";
+        
+        function updateStatus() {
+            fetch(`/get_status?job_id=${encodeURIComponent(jobId)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').textContent = data.status;
+                    document.getElementById('progress').textContent = data.progress;
+                    document.querySelector('.progress-bar').style.width = `${data.progress}%`;
+                    
+                    if (data.status === '완료' && data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                })
+                .catch(error => console.error('Status update error:', error));
+        }
+        
+        // 2초마다 상태 업데이트
+        setInterval(updateStatus, 2000);
+    </script>
+</body>
+</html>
