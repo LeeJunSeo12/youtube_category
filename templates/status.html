@@ -49,26 +49,34 @@
     </div>
     
     <script>
-        // 상태 업데이트를 위한 JavaScript
         const jobId = "{{ session.job_id }}";
         
         function updateStatus() {
             fetch(`/get_status?job_id=${encodeURIComponent(jobId)}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error('HTTP error');
+                    return response.json();
+                })
                 .then(data => {
                     document.getElementById('status').textContent = data.status;
                     document.getElementById('progress').textContent = data.progress;
                     document.querySelector('.progress-bar').style.width = `${data.progress}%`;
-                    
+    
+                    // 완료 상태 시 자동 리디렉트
                     if (data.status === '완료' && data.redirect) {
                         window.location.href = data.redirect;
                     }
                 })
-                .catch(error => console.error('Status update error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    setTimeout(updateStatus, 2000); // 재시도
+                });
         }
-        
-        // 2초마다 상태 업데이트
+    
+        // 초기 실행 및 2초 간격 업데이트
+        updateStatus();
         setInterval(updateStatus, 2000);
     </script>
+    
 </body>
 </html>

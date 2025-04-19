@@ -108,11 +108,16 @@ def get_status():
     if not job:
         return jsonify({'status': 'error', 'message': 'Job not found'}), 404
     
-    return jsonify({
+    response_data = {
         'status': job['status'],
-        'progress': job['progress'],
-        'result_file': job.get('result_file')
-    })
+        'progress': job['progress']
+    }
+    
+    # 완료 시 리디렉트 URL 추가
+    if job['status'] == '완료':
+        response_data['redirect'] = url_for('results')
+    
+    return jsonify(response_data)
 
 @app.route('/results')
 def results():
