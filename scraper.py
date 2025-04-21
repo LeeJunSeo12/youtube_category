@@ -23,7 +23,7 @@ def run_scraper(search_keyword, max_channels, job_id=None, progress_callback=Non
     # WebDriver 초기화
     driver = webdriver.Chrome(options=chrome_options)
     collected_channels = OrderedDict()  # 순서 유지 및 중복 방지
-    
+    channel_thumbnails = dict() 
     result_file = os.path.join('data', f'youtube_channels_{job_id}.xlsx')
 
     try:
@@ -50,6 +50,13 @@ def run_scraper(search_keyword, max_channels, job_id=None, progress_callback=Non
                     url = link.get_attribute('href')
                     if name and url not in collected_channels:
                         collected_channels[url] = name
+                        try:
+                            parent = link.find_element(By.XPATH, './../..')
+                            thumbnail_img = parent.find_element(By.XPATH, './/img')
+                            thumbnail_url = thumbnail_img.get_attribute('src')
+                        except Exception:
+                            thumbnail_url = None
+                        channel_thumbnails[url] = thumbnail_url
                         if len(collected_channels) >= max_channels:
                             break
                 except Exception as e:
@@ -61,7 +68,7 @@ def run_scraper(search_keyword, max_channels, job_id=None, progress_callback=Non
             
             # 배치 저장
             if len(collected_channels) % batch_size == 0:
-                save_to_excel(collected_channels, result_file)
+                save_to_excel(collected_channels, channel_thumbnails, result_file)
             
             # 스크롤 종료 조건 검사
             new_height = driver.execute_script("return document.documentElement.scrollHeight")
@@ -79,15 +86,16 @@ def run_scraper(search_keyword, max_channels, job_id=None, progress_callback=Non
         raise
     finally:
         # 최종 저장 및 리소스 정리
-        save_to_excel(collected_channels, result_file)
+        save_to_excel(collected_channels, channel_thumbnails, result_file)
         driver.quit()
         print(f"스크래핑 완료. 결과 파일: {result_file}")
         return result_file
 
-def save_to_excel(channels, filename):
+def save_to_excel(channels,thumbnails, filename):
     df = pd.DataFrame({
         '채널명': list(channels.values()),
-        '채널URL': list(channels.keys())
+        '채널URL': list(channels.keys()),
+        '썸네일URL': [thumbnails.get(url, None) for url in channels.keys()]
     })
     
     # 디렉토리 확인 및 생성

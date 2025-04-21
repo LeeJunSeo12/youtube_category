@@ -46,7 +46,7 @@ header h1 {
 }
 
 header p {
-    color: var(--secondary-color);
+    color:#ffffff;
     font-size: 1.2rem;
 }
 
@@ -214,9 +214,10 @@ input[type="number"]:focus {
 }
 
 .results-header h2 {
-    color: var(--primary-color);
+    color: #a52121;
     margin-bottom: 10px;
 }
+
 
 .channel-grid {
     display: flex;
@@ -473,4 +474,32 @@ input:focus {
     .channel-card {
         flex: 0 0 100%;
     }
+}
+
+
+/* 버튼 그룹 스타일 */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* 다운로드 버튼 스타일 */
+.btn-download {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.btn-download:hover {
+    background-color: #218838;
+}
+
+.btn-icon {
+    margin-right: 8px;
 }

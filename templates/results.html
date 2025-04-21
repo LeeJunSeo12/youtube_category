@@ -23,17 +23,25 @@
                 <p class="result-stats">
                     총 <span class="highlight">{{ total_channels }}</span>개의 채널 발견
                 </p>
-                <a href="{{ url_for('index') }}" class="btn btn-primary">
-                    <span class="btn-icon">🔍</span>
-                    새 검색하기
-                </a>
+                <div class="button-group">
+                    <form action="{{ url_for('index') }}" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="btn-icon">🔍</span>
+                            새 검색하기
+                        </button>
+                    </form>
+                    <a href="{{ url_for('download_excel', job_id=job_id) }}" class="btn btn-download">
+                        <span class="btn-icon">📁</span>
+                        엑셀 다운로드
+                    </a>
+                </div>
             </div>
             
             <div class="channel-grid">
                 {% for channel in channels %}
                 <div class="channel-card">
                     <div class="channel-thumbnail">
-                        <img src="https://via.placeholder.com/80" alt="채널 썸네일">
+                        <img src="{{ channel['썸네일URL'] }}" alt="채널 썸네일">
                     </div>
                     <h3>{{ channel['채널명'] }}</h3>
                     <a href="{{ channel['채널URL'] }}" target="_blank" class="channel-link">
